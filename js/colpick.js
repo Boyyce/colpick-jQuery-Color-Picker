@@ -229,30 +229,41 @@ For usage and examples: colpick.com/plugin
 			},
 			//Show/hide the color picker
 			show = function (ev) {
-				// Prevent the trigger of any direct parent
+				// Stops hiding of colorpicker.
 				ev.stopPropagation();
-				var cal = $('#' + $(this).data('colpickId'));
+				
+				var open = window.colpick.open;
+				var id  = $(this).data('colpickId');
+				var cal = $('#' + id);
+
+				// If already open, return or close exisiting.
+				if (open == id) return;
+				else if (open) hide({data: {cal: $('#' + open)}});
+
+				window.colpick.open = id;
 				cal.data('colpick').onBeforeShow.apply(this, [cal.get(0)]);
+
+				// Update colorpicker position.
 				var top = this.offsetHeight;
 				var left = this.offsetLeft - 5;
 				var viewPort = getViewport();
 				var calW = cal.width();
-				if (left + calW > viewPort.l + viewPort.w) {
-					left -= calW;
-				}
+				if (left + calW > viewPort.l + viewPort.w) left -= calW;
 				cal.css({left: left + 'px', top: top + 'px'});
-				if (cal.data('colpick').onShow.apply(this, [cal.get(0)]) != false) {
-					cal.show();
-				}
-				//Hide when user clicks outside
+
+				if (cal.data('colpick').onShow.apply(this, [cal.get(0)]) != false) cal.show();
+
+				// Hide when user clicks outside
 				$('html').mousedown({cal:cal}, hide);
-				cal.mousedown(function(ev){ev.stopPropagation();})
+				cal.mousedown(function(ev){ ev.stopPropagation();});
 			},
 			hide = function (ev) {
-				if (ev.data.cal.data('colpick').onHide.apply(this, [ev.data.cal.get(0)]) != false) {
+				if (ev.data.cal.data('colpick').onHide.apply(this, [ev.data.cal.get(0)]) != false) 
 					ev.data.cal.hide();
-				}
+
 				$('html').off('mousedown', hide);
+				ev.data.cal.off('mousedown');
+				window.colpick.open = '';
 			},
 			getViewport = function () {
 				var m = document.compatMode == 'CSS1Compat';
