@@ -31,7 +31,7 @@
       background-color: #777;
       color: #fff;
     }
-    .active {
+    .box span em.active {
       background-color: #333;
     }
   </style>
@@ -55,11 +55,11 @@ $('.open').colpick({
   color:'ff8800',
   submit: false,
   showEvent: 'mousedown',
-  onShow: function(el){
-    $(el).addClass('active');
+  onShow: function(el, eventTgt) {
+    $(eventTgt).addClass('active');
   },
-  onHide: function(el){
-    $(el).removeClass('active');
+  onHide: function(el, eventTgt) {
+    $(eventTgt).removeClass('active');
   },
   onSubmit:function(hsb,hex,rgb,el) {
     $(el).css('background-color', '#'+hex);

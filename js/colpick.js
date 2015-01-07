@@ -231,16 +231,25 @@ For usage and examples: colpick.com/plugin
 			show = function (ev) {
 				// Stops hiding of colorpicker.
 				ev.stopPropagation();
-				
-				var open = window.colpick.open;
+
+				var eventTarget = ev.currentTarget;
+				var openPicker = window.colpick.openPicker;
+				var openEventTarget = window.colpick.openEventTarget;
 				var id  = $(this).data('colpickId');
 				var cal = $('#' + id);
 
 				// If already open, return or close exisiting.
-				if (open == id) return;
-				else if (open) hide({data: {cal: $('#' + open)}});
+				if (openPicker == id) return;
+				else if (openPicker) 
+					hide({
+						data: {
+							cal: $('#' + openPicker), 
+							eventTarget: openEventTarget
+						}
+					});
 
-				window.colpick.open = id;
+				window.colpick.openPicker = id;
+				window.colpick.openEventTarget = eventTarget;
 				cal.data('colpick').onBeforeShow.apply(this, [cal.get(0)]);
 
 				// Update colorpicker position.
@@ -251,19 +260,20 @@ For usage and examples: colpick.com/plugin
 				if (left + calW > viewPort.l + viewPort.w) left -= calW;
 				cal.css({left: left + 'px', top: top + 'px'});
 
-				if (cal.data('colpick').onShow.apply(this, [cal.get(0)]) != false) cal.show();
+				if (cal.data('colpick').onShow.apply(this, [cal.get(0), eventTarget]) != false) cal.show();
 
 				// Hide when user clicks outside
-				$('html').mousedown({cal:cal}, hide);
+				$('html').mousedown({cal: cal, eventTarget: eventTarget}, hide);
 				cal.mousedown(function(ev){ ev.stopPropagation();});
 			},
 			hide = function (ev) {
-				if (ev.data.cal.data('colpick').onHide.apply(this, [ev.data.cal.get(0)]) != false) 
+				if (ev.data.cal.data('colpick').onHide.apply(this, [ev.data.cal.get(0), ev.data.eventTarget]) != false) 
 					ev.data.cal.hide();
 
 				$('html').off('mousedown', hide);
 				ev.data.cal.off('mousedown');
-				window.colpick.open = '';
+				window.colpick.openPicker = '';
+				window.colpick.openEventTarget = '';
 			},
 			getViewport = function () {
 				var m = document.compatMode == 'CSS1Compat';
