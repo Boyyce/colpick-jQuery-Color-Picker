@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Colpick</title>
+
+  <link rel="stylesheet" type="text/css" href="../css/colpick.css">
+  <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="../js/colpick.js"></script>
+  <style>
+    body {margin:0;}
+    .box {
+      margin: 50px;
+      width:600px; 
+      height:1400px;
+      position:relative;
+      background-color: #eee;
+      border: 3px dotted #000;
+    }
+    .box span {
+      position:fixed;
+    }
+    .box span em {
+      margin: 10px;
+      float:left;
+      cursor:pointer;
+      display:block;
+      padding: 10px;
+      width: 50px; 
+      height: 50px;
+      background-color: #777;
+      color: #fff;
+    }
+    .active {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="box">
+  <span>
+    <em class="open">Open color picker.</em>
+    <em class="open">Open color picker.</em>
+    <em class="open">Open color picker.</em>
+  </span>
+</div>
+
+
+<script>
+$('.open').colpick({
+  colorScheme:'light',
+  layout:'hex',
+  color:'ff8800',
+  submit: false,
+  showEvent: 'mousedown',
+  onShow: function(el){
+    $(el).addClass('active');
+  },
+  onHide: function(el){
+    $(el).removeClass('active');
+  },
+  onSubmit:function(hsb,hex,rgb,el) {
+    $(el).css('background-color', '#'+hex);
+  }
+});
+</script>
+</body>
+</html>
