@@ -233,9 +233,8 @@ For usage and examples: colpick.com/plugin
 				ev.stopPropagation();
 				var cal = $('#' + $(this).data('colpickId'));
 				cal.data('colpick').onBeforeShow.apply(this, [cal.get(0)]);
-				var pos = $(this).offset();
-				var top = pos.top + this.offsetHeight;
-				var left = pos.left;
+				var top = this.offsetHeight;
+				var left = this.offsetLeft - 5;
 				var viewPort = getViewport();
 				var calW = cal.width();
 				if (left + calW > viewPort.l + viewPort.w) {
@@ -371,7 +370,7 @@ For usage and examples: colpick.com/plugin
 						setSelector(options.color, cal.get(0));
 						setCurrentColor(options.color, cal.get(0));
 						setNewColor(options.color, cal.get(0));
-						//Append to body if flat=false, else show in place
+						//if flat=false show always.
 						if (options.flat) {
 							cal.appendTo(this).show();
 							cal.css({
@@ -379,7 +378,7 @@ For usage and examples: colpick.com/plugin
 								display: 'block'
 							});
 						} else {
-							cal.appendTo(document.body);
+							cal.insertAfter(this);
 							$(this).on(options.showEvent, show);
 							cal.css({
 								position:'absolute'
