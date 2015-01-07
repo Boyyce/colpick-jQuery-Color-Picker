@@ -320,8 +320,8 @@ For usage and examples: colpick.com/plugin
 					if (!$(this).data('colpickId')) {
 						var options = $.extend({}, opt);
 						options.origColor = opt.color;
-						//Generate and assign a random ID
-						var id = 'collorpicker_' + parseInt(Math.random() * 1000);
+						//Generate and assign a unique ID
+						var id = 'collorpicker_' + window.colpick.count++;
 						$(this).data('colpickId', id);
 						//Set the tpl's ID and get the HTML
 						var cal = $(tpl).attr('id', id);
@@ -521,4 +521,5 @@ For usage and examples: colpick.com/plugin
 			hexToRgb: hexToRgb
 		}
 	});
+	window.colpick = {count: 1};
 })(jQuery);
