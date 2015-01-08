@@ -481,7 +481,7 @@ For usage and examples: colpick.com/plugin
 	}();
 	//Color space convertions
 	var hexToRgb = function (hex) {
-		var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
+		hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
 		return {r: hex >> 16, g: (hex & 0x00FF00) >> 8, b: (hex & 0x0000FF)};
 	};
 	var hexToHsb = function (hex) {
@@ -493,8 +493,8 @@ For usage and examples: colpick.com/plugin
 		var max = Math.max(rgb.r, rgb.g, rgb.b);
 		var delta = max - min;
 		hsb.b = max;
-		hsb.s = max != 0 ? 255 * delta / max : 0;
-		if (hsb.s != 0) {
+		hsb.s = max !== 0 ? 255 * delta / max : 0;
+		if (hsb.s !== 0) {
 			if (rgb.r == max) hsb.h = (rgb.g - rgb.b) / delta;
 			else if (rgb.g == max) hsb.h = 2 + (rgb.b - rgb.r) / delta;
 			else hsb.h = 4 + (rgb.r - rgb.g) / delta;
